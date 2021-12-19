@@ -3,7 +3,6 @@
 /**
  * Module dependencies.
  */
-
 const app = require("../app");
 const debug = require("debug")("coolpiece:server");
 const http = require("http");

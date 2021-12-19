@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import indexRouter from "./routes/index";
 import "./db";
+import "regenerator-runtime";
 
 const app = express();
 
