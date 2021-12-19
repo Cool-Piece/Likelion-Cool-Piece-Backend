@@ -9,6 +9,7 @@
     "build": "babel src --out-dir build --copy-files"
   },
   "dependencies": {
+    "@babel/runtime": "^7.16.5",
     "axios": "^0.24.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
