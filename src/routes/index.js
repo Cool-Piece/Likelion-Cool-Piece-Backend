@@ -21,7 +21,7 @@ indexRouter.get("/interview", showInterview);
 indexRouter.get("/login", getLogin);
 
 //user
-indexRouter.get("users/github/start", githubAuth);
-indexRouter.get("users/github/callback", githubAuthCallback);
+indexRouter.get("/users/github/start", githubAuth);
+indexRouter.get("/users/github/callback", githubAuthCallback);
 
 export default indexRouter;

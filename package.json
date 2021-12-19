@@ -4,11 +4,12 @@
   "license": "MIT",
   "scripts": {
     "start": "node ./build/bin/www",
-    "dev:starts": "babel-node -- ./bin/www",
+    "dev:starts": "babel-node -- src/bin/www",
     "dev": "nodemon",
     "build": "babel src --out-dir build --copy-files"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^10.0.0",

@@ -6,9 +6,10 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      default: "",
-      trim: true,
+      required: true,
       unique: true,
+      trim: true,
+      default: "",
     },
     socialLogin: {
       type: String,

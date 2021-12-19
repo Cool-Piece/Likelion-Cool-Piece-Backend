@@ -1,6 +1,5 @@
 import "dotenv/config";
 import express from "express";
-import createError from "http-errors";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
@@ -16,10 +15,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-
-app.use(function (req, res, next) {
-  next(createError(404));
-});
 
 app.use(function (err, req, res, next) {
   res.locals.message = err.message;
