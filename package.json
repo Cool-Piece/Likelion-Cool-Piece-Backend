@@ -1,0 +1,29 @@
+{
+  "name": "coolpiece",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./build/bin/www",
+    "dev:starts": "babel-node -- ./bin/www",
+    "dev": "nodemon",
+    "build": "babel src --out-dir build --copy-files"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^10.0.0",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "mongoose": "^6.1.2",
+    "morgan": "~1.9.1",
+    "pug": "2.0.0-beta11"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.5",
+    "@babel/node": "^7.16.5",
+    "@babel/plugin-transform-runtime": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "nodemon": "^2.0.15"
+  }
+}
