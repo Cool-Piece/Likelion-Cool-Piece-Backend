@@ -5,8 +5,10 @@ import createError from "http-errors";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import cors from "cors";
-import indexRouter from "./routes/index";
 import "./db";
+import userRouter from "./routes/users";
+import indexRouter from "./routes/index";
+
 import "regenerator-runtime";
 
 const app = express();
@@ -19,6 +21,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
+app.use("/users", userRouter);
 
 app.use(function (req, res, next) {
   next(createError(404, "Can not find the page you request"));
