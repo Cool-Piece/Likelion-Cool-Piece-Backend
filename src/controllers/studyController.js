@@ -10,12 +10,12 @@ export const showProject = async (req, res, next) => {
   return res.json({ result: "ok", projects });
 };
 
-export const showInterview = (req, res, next) => {
+export const showInterview = async (req, res, next) => {
   const interviews = await Study.find({ study_type: "interview" });
   return res.json({ result: "ok", interviews });
 };
 
-export const showStudy = (req, res, next) => {
+export const showStudy = async (req, res, next) => {
   const studies = await Study.find({ study_type: "study" }).sort({
     createdAt: "desc",
   });
