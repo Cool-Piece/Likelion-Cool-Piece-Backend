@@ -5,14 +5,19 @@ export const home = async (req, res, next) => {
   return res.json({ result: "ok", studies });
 };
 
-export const showProject = (req, res, next) => {
-  res.send("project route");
+export const showProject = async (req, res, next) => {
+  const projects = await Study.find({ study_type: "project" });
+  return res.json({ result: "ok", projects });
 };
 
 export const showInterview = (req, res, next) => {
-  res.send("interview banner Route");
+  const interviews = await Study.find({ study_type: "interview" });
+  return res.json({ result: "ok", interviews });
 };
 
 export const showStudy = (req, res, next) => {
-  res.send("Study nav banner Route");
+  const studies = await Study.find({ study_type: "study" }).sort({
+    createdAt: "desc",
+  });
+  return res.json({ result: "ok", studies });
 };
