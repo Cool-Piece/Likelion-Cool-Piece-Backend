@@ -1,5 +1,8 @@
-export const home = (req, res, next) => {
-  res.send("ok home page");
+import Study from "../models/Study";
+
+export const home = async (req, res, next) => {
+  const studies = await Study.find({}).sort({ createdAt: "desc" });
+  return res.json({ result: "ok", studies });
 };
 
 export const showProject = (req, res, next) => {

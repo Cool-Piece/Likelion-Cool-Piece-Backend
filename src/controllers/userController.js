@@ -1,7 +1,6 @@
 import axios from "axios";
 import User from "../models/User";
-
-export const getLogin = (req, res) => res.render("login");
+import createError from "http-errors";
 
 export const githubAuth = (req, res, next) => {
   const baseUrl = "https://github.com/login/oauth/authorize";
@@ -27,40 +26,44 @@ export const githubAuthCallback = async (req, res, next) => {
   const params = new URLSearchParams(options).toString();
   const finalUrl = `${baseUrl}?${params}`;
 
-  const result = await axios({
-    url: `${finalUrl}`,
-    method: "post",
-    headers: {
-      Accept: "application/json",
-    },
-  });
+  try {
+    const result = await axios({
+      url: `${finalUrl}`,
+      method: "post",
+      headers: {
+        Accept: "application/json",
+      },
+    });
 
-  const tokenRequest = await result.data;
+    const tokenRequest = await result.data;
 
-  if (tokenRequest.access_token) {
-    const { access_token } = tokenRequest;
-    const githubApi = "https://api.github.com";
-    const userData = await (
-      await axios({
-        url: `${githubApi}/user`,
-        headers: {
-          Authorization: `token ${access_token}`,
-        },
-      })
-    ).data;
+    if (tokenRequest.access_token) {
+      const { access_token } = tokenRequest;
+      const githubApi = "https://api.github.com";
+      const userData = await (
+        await axios({
+          url: `${githubApi}/user`,
+          headers: {
+            Authorization: `token ${access_token}`,
+          },
+        })
+      ).data;
 
-    const username = userData.login;
-    const user = await User.findOne({ username });
+      const username = userData.login;
+      const user = await User.findOne({ username });
 
-    if (!user) {
-      const newUser = await User.create({
-        username: userData.login ? userData.login : "Unknown",
-        socialLogin: "github",
-        location: userData.location ? userData.location : "",
-      });
+      if (!user) {
+        const newUser = await User.create({
+          username: userData.login ? userData.login : "Unknown",
+          socialLogin: "github",
+          location: userData.location ? userData.location : "",
+        });
+      }
+      return res.json({ result: "ok" });
+    } else {
+      next(createError(403, "Invalid User"));
     }
-    return res.redirect("/");
-  } else {
-    return res.redirect("/login");
+  } catch (error) {
+    next(error);
   }
 };

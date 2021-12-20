@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import path from "path";
+import createError from "http-errors";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import cors from "cors";
@@ -18,6 +19,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
+
+app.use(function (req, res, next) {
+  next(createError(404, "Can not find the page you request"));
+});
 
 app.use(function (err, req, res, next) {
   res.locals.message = err.message;

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+const STUDY_TYPES = ["project", "interview", "study"];
 const StudySchema = new mongoose.Schema({
   title: { type: String, required: true, maxlength: 100, trim: true },
   creator: {
@@ -12,6 +13,14 @@ const StudySchema = new mongoose.Schema({
   due_date: {
     type: Date,
     require: [true, "dueDate is required"],
+  },
+  study_status: {
+    type: Boolean,
+    default: false,
+  },
+  study_type: {
+    type: String,
+    enum: STUDY_TYPES,
   },
   total: { type: Number, default: 1, max: 30 },
   participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
