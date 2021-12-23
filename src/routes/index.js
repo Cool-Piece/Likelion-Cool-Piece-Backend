@@ -15,6 +15,6 @@ indexRouter.get("/", home);
 indexRouter.get("/project", showProject);
 indexRouter.get("/study", showStudy);
 indexRouter.get("/interview", showInterview);
-indexRouter.get("/create", makeStudy);
+indexRouter.post("/create", makeStudy);
 
 export default indexRouter;
