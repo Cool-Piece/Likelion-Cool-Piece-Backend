@@ -61,7 +61,7 @@ export const githubAuthCallback = async (req, res, next) => {
       }
       return res.json({ result: "ok" });
     } else {
-      next(createError(403, "Invalid User"));
+      return res.status(403).json({ result: "fail", message: "Invalid User" });
     }
   } catch (error) {
     next(error);
