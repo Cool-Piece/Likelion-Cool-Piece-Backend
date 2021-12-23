@@ -23,5 +23,6 @@ export const showStudy = async (req, res, next) => {
 };
 
 export const makeStudy = (req, res, next) => {
+  console.log(req.body, "body");
   return res.json({ result: "ok" });
 };
