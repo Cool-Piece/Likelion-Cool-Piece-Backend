@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema(
     location: { type: String },
     interested_color: { type: [String] },
     bookmark: { type: [String] },
+    join_studyList: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
   },
   {
     timestamps: true,

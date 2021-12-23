@@ -21,3 +21,7 @@ export const showStudy = async (req, res, next) => {
   });
   return res.json({ result: "ok", studies });
 };
+
+export const makeStudy = (req, res, next) => {
+  return res.json({ result: "ok" });
+};
