@@ -17,9 +17,8 @@ const userSchema = new mongoose.Schema(
     },
     avatarUrl: { type: String },
     location: { type: String },
-    interested_color: { type: [String] },
+    interested_skills: { type: [String] },
     bookmark: { type: [String] },
-    join_studyList: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
   },
   {
     timestamps: true,

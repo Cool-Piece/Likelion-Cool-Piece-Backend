@@ -16,7 +16,7 @@ const StudySchema = new mongoose.Schema({
   },
   study_status: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   study_type: {
     type: String,
@@ -25,6 +25,7 @@ const StudySchema = new mongoose.Schema({
   total: { type: Number, default: 1, max: 30 },
   participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   skills: { type: [String], default: ["javascript"] },
+  description: { type: String, required: true, trim: true, minLength: 2 },
   meta: {
     like: { type: Number, default: 0 },
     ratings: { type: Number },

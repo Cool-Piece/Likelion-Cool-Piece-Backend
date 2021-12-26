@@ -22,7 +22,55 @@ export const showStudy = async (req, res, next) => {
   return res.json({ result: "ok", studies });
 };
 
-export const makeStudy = (req, res, next) => {
-  console.log(req.body, "body");
-  return res.json({ result: "ok" });
+export const makeStudy = async (req, res, next) => {
+  const {
+    title,
+    description,
+    study_type,
+    total,
+    location,
+    skills,
+    start_date,
+    due_date,
+  } = req.body;
+
+  //currentUser Object Id
+  const { users: _id } = localStorage.getItem("currentUser");
+
+  try {
+    if (!title) {
+      return res.status(400).json({ message: "title should be required" });
+    }
+
+    if (!(start_date && due_date)) {
+      return res
+        .status(400)
+        .json({ message: "start date and duedate is needed" });
+    }
+
+    if (!location) {
+      return res.status(400).json({ message: "location should be required" });
+    }
+
+    if (!skills) {
+      return res.status(400).json({ message: "skills should be required" });
+    }
+
+    const newStudy = await Study.create({
+      title,
+      creator: _id,
+      description,
+      study_type,
+      total,
+      location,
+      skills,
+      start_date,
+      due_date,
+      $push: { participants: _id },
+    });
+
+    return res.json({ result: "ok" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
