@@ -7,8 +7,6 @@ import {
   makeStudy,
 } from "../controllers/studyController";
 
-import { githubAuth, githubAuthCallback } from "../controllers/userController";
-
 const indexRouter = express.Router();
 
 indexRouter.get("/", home);

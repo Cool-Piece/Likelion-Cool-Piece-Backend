@@ -23,6 +23,7 @@ export const showStudy = async (req, res, next) => {
 };
 
 export const makeStudy = async (req, res, next) => {
+  console.log(req.body, " request");
   const {
     title,
     description,
@@ -34,8 +35,7 @@ export const makeStudy = async (req, res, next) => {
     due_date,
   } = req.body;
 
-  //currentUser Object Id
-  const { users: _id } = localStorage.getItem("currentUser");
+  // TODO: currentUser Object Id find and save from cookies
 
   try {
     if (!title) {
@@ -66,7 +66,7 @@ export const makeStudy = async (req, res, next) => {
       skills,
       start_date,
       due_date,
-      $push: { participants: _id },
+      // $push: { participants: _id },
     });
 
     return res.json({ result: "ok" });

@@ -1,6 +1,5 @@
 import axios from "axios";
 import User from "../models/User";
-import createError from "http-errors";
 
 export const githubAuth = (req, res, next) => {
   const baseUrl = "https://github.com/login/oauth/authorize";
@@ -58,12 +57,34 @@ export const githubAuthCallback = async (req, res, next) => {
           socialLogin: "github",
           location: userData.location ? userData.location : "",
         });
+        const data = newUser.toJSON();
+        const token = jwt.sign(
+          {
+            _id: data._id,
+            username: data.username,
+          },
+          process.env.SECRET_KEY,
+          {
+            expiresIn: "1d",
+          }
+        );
+        return res
+          .cookie("access_token", token, {
+            maxAge: 1000 * 60 * 60 * 24,
+            httpOnly: true,
+          })
+          .redirect("http://127.0.0.1:5500/assets/html/index.html");
       }
-      return res.json({ result: "ok" });
     } else {
-      return res.status(403).json({ result: "fail", message: "Invalid User" });
+      return res.status(403).json({ result: "fail", message: "exists User" });
     }
   } catch (error) {
     next(error);
   }
+};
+
+export const logout = (req, res) => {
+  return res
+    .clearCookie("access_token")
+    .redirect("http://127.0.0.1:5500/assets/html/index.html");
 };
