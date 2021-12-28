@@ -35,6 +35,7 @@ export const githubAuthCallback = async (req, res, next) => {
     });
 
     const tokenRequest = await result.data;
+    console.log(tokenRequest, "check");
 
     if (tokenRequest.access_token) {
       const { access_token } = tokenRequest;
@@ -73,7 +74,7 @@ export const githubAuthCallback = async (req, res, next) => {
             maxAge: 1000 * 60 * 60 * 24,
             httpOnly: true,
           })
-          .redirect("http://127.0.0.1:5500/assets/html/index.html");
+          .redirect("/");
       }
     } else {
       return res.status(403).json({ result: "fail", message: "exists User" });
