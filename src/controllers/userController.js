@@ -56,6 +56,7 @@ export const githubAuthCallback = async (req, res, next) => {
             expiresIn: "1d",
           }
         );
+        console.log("token is avabliable??? ", token);
         return res.status(200).json({ access_token: token });
       }
     } else {
