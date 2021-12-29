@@ -1,26 +1,13 @@
 import axios from "axios";
 import User from "../models/User";
-
-export const githubAuth = (req, res, next) => {
-  const baseUrl = "https://github.com/login/oauth/authorize";
-  const config = {
-    client_id: process.env.GITHUB_KEY,
-    allow_signup: false,
-    scope: "read:user user:email",
-  };
-
-  const params = new URLSearchParams(config).toString();
-  const finalUrl = `${baseUrl}?${params}`;
-
-  return res.redirect(finalUrl);
-};
+import jwt from "jsonwebtoken";
 
 export const githubAuthCallback = async (req, res, next) => {
   const baseUrl = "https://github.com/login/oauth/access_token";
   const options = {
     client_id: process.env.GITHUB_KEY,
     client_secret: process.env.GITHUB_SECRET,
-    code: req.query.code,
+    code: req.body.code,
   };
   const params = new URLSearchParams(options).toString();
   const finalUrl = `${baseUrl}?${params}`;
@@ -35,7 +22,7 @@ export const githubAuthCallback = async (req, res, next) => {
     });
 
     const tokenRequest = await result.data;
-    console.log(tokenRequest, "check");
+    console.log(tokenRequest, "data github tokne");
 
     if (tokenRequest.access_token) {
       const { access_token } = tokenRequest;
@@ -69,12 +56,7 @@ export const githubAuthCallback = async (req, res, next) => {
             expiresIn: "1d",
           }
         );
-        return res
-          .cookie("access_token", token, {
-            maxAge: 1000 * 60 * 60 * 24,
-            httpOnly: true,
-          })
-          .redirect("https://www.naver.com");
+        return res.status(200).json({ access_token: token });
       }
     } else {
       return res.status(403).json({ result: "fail", message: "exists User" });
@@ -85,7 +67,5 @@ export const githubAuthCallback = async (req, res, next) => {
 };
 
 export const logout = (req, res) => {
-  return res
-    .clearCookie("access_token")
-    .redirect("http://127.0.0.1:5500/assets/html/index.html");
+  return res.clearCookie("access_token");
 };
