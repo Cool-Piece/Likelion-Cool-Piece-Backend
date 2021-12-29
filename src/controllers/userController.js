@@ -52,14 +52,7 @@ export const githubAuthCallback = async (req, res, next) => {
       const username = userData.login;
       const user = await User.findOne({ username });
 
-      if (!user) {
-        const newUser = await User.create({
-          username: userData.login ? userData.login : "Unknown",
-          socialLogin: "github",
-          location: userData.location ? userData.location : "",
-        });
-        const data = newUser.toJSON();
-        const token = jwt.sign(
+      const token = jwt.sign(
           {
             _id: data._id,
             username: data.username,
@@ -69,17 +62,40 @@ export const githubAuthCallback = async (req, res, next) => {
             expiresIn: "1d",
           }
         );
-        res.cookie("access_token", token, {
-          maxAge: 1000 * 60 * 60 * 24,
-          httpOnly: true,
-        });
-        window.location.href = "http://127.0.0.1:5500/assets/html/index.html";
-        return;
-        //.redirect("http://127.0.0.1:5500/assets/html/index.html");
-      }
-    } else {
-      return res.status(403).json({ result: "fail", message: "exists User" });
-    }
+        return res
+          .cookie("access_token", token, {
+            maxAge: 1000 * 60 * 60 * 24,
+            httpOnly: true,
+          })
+          .redirect("http://127.0.0.1:5500/assets/html/index.html");
+
+    //  if (!user) {
+    //    const newUser = await User.create({
+    //      username: userData.login ? userData.login : "Unknown",
+    //      socialLogin: "github",
+    //      location: userData.location ? userData.location : "",
+    //    });
+    //    const data = newUser.toJSON();
+    //    const token = jwt.sign(
+    //      {
+    //        _id: data._id,
+    //        username: data.username,
+    //      },
+    //      process.env.SECRET_KEY,
+    //      {
+    //        expiresIn: "1d",
+    //      }
+    //    );
+    //    return res
+    //      .cookie("access_token", token, {
+    //        maxAge: 1000 * 60 * 60 * 24,
+    //        httpOnly: true,
+    //      })
+    //      .redirect("http://127.0.0.1:5500/assets/html/index.html");
+    //  }
+    //} else {
+    //  return res.status(403).json({ result: "fail", message: "exists User" });
+    //}
   } catch (error) {
     next(error);
   }
