@@ -7,7 +7,6 @@ import {
 
 const userRouter = express.Router();
 
-userRouter.get("/github/start", githubAuth);
 userRouter.post("/github/callback", githubAuthCallback);
 userRouter.get("/logout", logout);
 
