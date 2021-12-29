@@ -58,7 +58,7 @@ export const makeStudy = async (req, res, next) => {
 
     const newStudy = await Study.create({
       title,
-      creator: _id,
+      //creator: _id,
       description,
       study_type,
       total,
