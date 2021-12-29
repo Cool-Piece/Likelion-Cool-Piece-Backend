@@ -71,6 +71,7 @@ export const makeStudy = async (req, res, next) => {
 
     return res.json({ result: "ok" });
   } catch (error) {
+    console.log(error, "error ");
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
