@@ -59,6 +59,20 @@ export const githubAuthCallback = async (req, res, next) => {
         console.log("token is avabliable??? ", token);
         return res.status(200).json({ access_token: token });
       }
+      // test for else
+      const data = user.toJSON();
+      const token = jwt.sign(
+        {
+          _id: data._id,
+          username: data.username,
+        },
+        process.env.SECRET_KEY,
+        {
+          expiresIn: "1d",
+        }
+      );
+      console.log("else token !!!!!!!!!!!!!!!", token);
+      return res.status(200).json({ access_token: token });
     } else {
       return res.status(403).json({ result: "fail", message: "exists User" });
     }
