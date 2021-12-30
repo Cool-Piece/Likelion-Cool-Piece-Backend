@@ -22,7 +22,6 @@ export const githubAuthCallback = async (req, res, next) => {
     });
 
     const tokenRequest = await result.data;
-    console.log(tokenRequest, "data github tokne");
 
     if (tokenRequest.access_token) {
       const { access_token } = tokenRequest;
@@ -37,48 +36,48 @@ export const githubAuthCallback = async (req, res, next) => {
       ).data;
 
       const username = userData.login;
-      const user = await User.findOne({ username });
 
-      //if (!user) {
-      //  const newUser = await User.create({
-      //    username: userData.login ? userData.login : "Unknown",
-      //    socialLogin: "github",
-      //    location: userData.location ? userData.location : "",
-      //  });
-      //  const data = newUser.toJSON();
-      //  const token = jwt.sign(
-      //    {
-      //      _id: data._id,
-      //      username: data.username,
-      //    },
-      //    process.env.SECRET_KEY,
-      //    {
-      //      expiresIn: "1d",
-      //    }
-      //  );
-      //  console.log("token is avabliable??? ", token);
-      //  return res.status(200).json({ access_token: token });
-      //}
-      // test for else
-      const data = user.toJSON();
-      const token = jwt.sign(
-        {
-          username: data.username,
-        },
-        process.env.SECRET_KEY,
-        {
-          expiresIn: "1d",
-        }
-      );
-      console.log("else token !!!!!!!!!!!!!!!", token);
-      return res.status(200).json({ access_token: token });
+      const existUser = await User.findOne({ username: username });
+
+      if (!existUser) {
+        const newUser = await User.create({
+          username: userData.login ? userData.login : "Unknown",
+          socialLogin: "github",
+          location: userData.location ? userData.location : "",
+          avatar_url: userData.avatar_url,
+        });
+
+        const token = jwt.sign(
+          {
+            _id: newUser._id.toString(),
+            username: newUser.username,
+          },
+          process.env.SECRET_KEY,
+          {
+            expiresIn: "1d",
+          }
+        );
+        return res.json({ message: "ok", access_token: token });
+      } else {
+        const token = jwt.sign(
+          {
+            _id: existUser._id.toString(),
+            username: existUser.username,
+          },
+          process.env.SECRET_KEY,
+          {
+            expiresIn: "1d",
+          }
+        );
+        return res.json({ message: "ok", access_token: token });
+      }
     } else {
       return res
         .status(403)
         .json({ result: "fail", message: "github token is wrong " });
     }
   } catch (error) {
-    next(error);
+    console.log(error, "err");
   }
 };
 
