@@ -63,7 +63,6 @@ export const githubAuthCallback = async (req, res, next) => {
       const data = user.toJSON();
       const token = jwt.sign(
         {
-          _id: data._id,
           username: data.username,
         },
         process.env.SECRET_KEY,
@@ -74,7 +73,9 @@ export const githubAuthCallback = async (req, res, next) => {
       console.log("else token !!!!!!!!!!!!!!!", token);
       return res.status(200).json({ access_token: token });
     } else {
-      return res.status(403).json({ result: "fail", message: "exists User" });
+      return res
+        .status(403)
+        .json({ result: "fail", message: "github token is wrong " });
     }
   } catch (error) {
     next(error);
