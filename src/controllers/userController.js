@@ -39,26 +39,26 @@ export const githubAuthCallback = async (req, res, next) => {
       const username = userData.login;
       const user = await User.findOne({ username });
 
-      if (!user) {
-        const newUser = await User.create({
-          username: userData.login ? userData.login : "Unknown",
-          socialLogin: "github",
-          location: userData.location ? userData.location : "",
-        });
-        const data = newUser.toJSON();
-        const token = jwt.sign(
-          {
-            _id: data._id,
-            username: data.username,
-          },
-          process.env.SECRET_KEY,
-          {
-            expiresIn: "1d",
-          }
-        );
-        console.log("token is avabliable??? ", token);
-        return res.status(200).json({ access_token: token });
-      }
+      //if (!user) {
+      //  const newUser = await User.create({
+      //    username: userData.login ? userData.login : "Unknown",
+      //    socialLogin: "github",
+      //    location: userData.location ? userData.location : "",
+      //  });
+      //  const data = newUser.toJSON();
+      //  const token = jwt.sign(
+      //    {
+      //      _id: data._id,
+      //      username: data.username,
+      //    },
+      //    process.env.SECRET_KEY,
+      //    {
+      //      expiresIn: "1d",
+      //    }
+      //  );
+      //  console.log("token is avabliable??? ", token);
+      //  return res.status(200).json({ access_token: token });
+      //}
       // test for else
       const data = user.toJSON();
       const token = jwt.sign(
