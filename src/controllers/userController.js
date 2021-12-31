@@ -119,8 +119,5 @@ export const getUserInfo = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error, "error");
-    if (err instanceof JsonWebTokenError) {
-      return res.status(401).json({ message: "jwt token invalid" });
-    }
   }
 };

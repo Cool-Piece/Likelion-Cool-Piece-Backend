@@ -33,6 +33,7 @@ export const makeStudy = async (req, res, next) => {
     skills,
     start_date,
     due_date,
+    userId,
   } = req.body;
 
   // TODO: currentUser Object Id find and save from cookies
@@ -58,20 +59,32 @@ export const makeStudy = async (req, res, next) => {
 
     const newStudy = await Study.create({
       title,
-      //creator: _id,
+      //creator: userId,
       description,
       study_type,
-      total,
+      total: Number(participants),
       location,
-      skills,
+      //skills,
       start_date,
       due_date,
-      // $push: { participants: _id },
     });
 
-    return res.json({ result: "ok" });
+    // Todo: array 추가
+    //$push: { participants: userId },
+
+    return res.json({ message: "study groups are succeed to be crated" });
   } catch (error) {
     console.log(error, "error ");
     res.status(500).json({ message: "Internal Server Error" });
   }
+};
+
+export const getStudyInfo = async (req, res, next) => {
+  const { id } = req.params;
+  const study = await Study.findById(id);
+  if (!study) {
+    return res.status(404).json({ message: "Can not find Study" });
+  }
+
+  return res.json({ studyInfo: study });
 };

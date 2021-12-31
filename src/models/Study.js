@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const STUDY_TYPES = ["project", "interview", "study"];
+const STUDY_TYPES = ["프로젝트", "면접", "스터디"];
 const StudySchema = new mongoose.Schema(
   {
     title: { type: String, required: true, maxlength: 100, trim: true },
@@ -9,9 +9,9 @@ const StudySchema = new mongoose.Schema(
       required: true,
       ref: "User",
     },
-    start_date: { type: Date, require: [true, "startDate is required"] },
+    start_date: { type: String, require: [true, "startDate is required"] },
     due_date: {
-      type: Date,
+      type: String,
       require: [true, "dueDate is required"],
     },
     study_status: {
