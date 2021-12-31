@@ -49,7 +49,7 @@ export const githubAuthCallback = async (req, res, next) => {
 
         const token = jwt.sign(
           {
-            _id: newUser._id.toString(),
+            _id: newUser._id,
             username: newUser.username,
           },
           process.env.SECRET_KEY,
@@ -61,7 +61,7 @@ export const githubAuthCallback = async (req, res, next) => {
       } else {
         const token = jwt.sign(
           {
-            _id: existUser._id.toString(),
+            _id: existUser._id,
             username: existUser.username,
           },
           process.env.SECRET_KEY,
@@ -82,5 +82,45 @@ export const githubAuthCallback = async (req, res, next) => {
 };
 
 export const logout = (req, res) => {
-  return res.clearCookie("access_token");
+  res.clearCookie("access_token");
+  return res.json({ message: "ok" });
+};
+
+const secretKey = process.env.SECRET_KEY;
+const BEARER = "Bearer";
+
+function parseToken(authorization) {
+  if (!authorization) {
+    return;
+  }
+  return authorization.slice(BEARER.length);
+}
+
+export const getUserInfo = async (req, res, next) => {
+  const authorization = req.get("Authorization");
+
+  try {
+    const accessToken = parseToken(authorization);
+    const decoded = jwt.verify(accessToken, secretKey);
+    const { username } = decoded;
+
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ message: "can not find User" });
+    }
+
+    return res.json({
+      userId: user._id,
+      username,
+      avatar_url: user.avatar_url,
+      interested_skills: user.interested_skills,
+      location: user.location,
+    });
+  } catch (error) {
+    console.log(error, "error");
+    if (err instanceof JsonWebTokenError) {
+      return res.status(401).json({ message: "jwt token invalid" });
+    }
+  }
 };
