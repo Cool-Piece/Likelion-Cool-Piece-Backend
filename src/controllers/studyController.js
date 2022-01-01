@@ -23,7 +23,6 @@ export const showStudy = async (req, res, next) => {
 };
 
 export const makeStudy = async (req, res, next) => {
-  console.log(req.body, " request");
   const {
     title,
     description,
@@ -35,8 +34,6 @@ export const makeStudy = async (req, res, next) => {
     due_date,
     userId,
   } = req.body;
-
-  // TODO: currentUser Object Id find and save from cookies
 
   try {
     if (!title) {
@@ -59,32 +56,35 @@ export const makeStudy = async (req, res, next) => {
 
     const newStudy = await Study.create({
       title,
-      //creator: userId,
+      creator: userId,
       description,
       study_type,
-      total: Number(participants),
+      total: Number(total),
       location,
-      //skills,
+      skills,
       start_date,
       due_date,
     });
 
-    // Todo: array 추가
-    //$push: { participants: userId },
+    newStudy.participants.push(userId);
 
-    return res.json({ message: "study groups are succeed to be crated" });
+    return res.json({
+      result: "ok",
+      message: "study groups are succeed to be crated",
+    });
   } catch (error) {
     console.log(error, "error ");
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
-export const getStudyInfo = async (req, res, next) => {
-  const { id } = req.params;
-  const study = await Study.findById(id);
-  if (!study) {
-    return res.status(404).json({ message: "Can not find Study" });
-  }
+// TODO:  after create study, comment 해체
+//export const getStudyInfo = async (req, res, next) => {
+//  const { id } = req.params;
+//  const study = await Study.findById(id);
+//  if (!study) {
+//    return res.status(404).json({ message: "Can not find Study" });
+//  }
 
-  return res.json({ studyInfo: study });
-};
+//  return res.json({ studyInfo: study });
+//};
