@@ -1,7 +1,10 @@
 import Study from "../models/Study";
 
 export const home = async (req, res, next) => {
-  const studies = await Study.find({}).sort({ createdAt: "desc" });
+  const studies = await Study.find({})
+    .sort({ createdAt: "desc" })
+    .populate("creator");
+
   return res.json({ result: "ok", studies });
 };
 
