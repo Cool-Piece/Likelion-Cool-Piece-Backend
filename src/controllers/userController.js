@@ -105,7 +105,6 @@ export const getUserInfo = async (req, res, next) => {
     const { username } = decoded;
 
     const user = await User.findOne({ username });
-    console.log(user, "user");
 
     if (!user) {
       return res.status(404).json({ message: "can not find User" });
@@ -123,3 +122,6 @@ export const getUserInfo = async (req, res, next) => {
     console.log(error, "error");
   }
 };
+
+//ToDo: user update정보 반영
+export const editUserInfo = (req, res, next) => {};
