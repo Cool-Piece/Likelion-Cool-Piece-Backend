@@ -1,5 +1,6 @@
 import Comment from "../models/Comment";
 import Study from "../models/Study";
+import parseToken from "../utils/token";
 
 export const sendComment = async (req, res, next) => {
   const studyId = req.params.id;
