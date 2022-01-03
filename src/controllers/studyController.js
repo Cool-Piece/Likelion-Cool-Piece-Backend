@@ -83,16 +83,12 @@ export const makeStudy = async (req, res, next) => {
   }
 };
 
-// TODO:  after create study, comment 해체
 export const getStudyInfo = async (req, res, next) => {
-  console.log("why ehre??");
-  console.log(req.params);
-  //const { id } = req.params;
-  //const study = await Study.findById(id);
-  //if (!study) {
-  //  return res.status(404).json({ message: "Can not find Study" });
-  //}
+  const { id } = req.params;
+  const study = await Study.findById(id);
+  if (!study) {
+    return res.status(404).json({ message: "Can not find Study" });
+  }
 
-  //return res.json({ studyInfo: study });
-  return res.send("ok");
+  return res.json({ studyInfo: study });
 };

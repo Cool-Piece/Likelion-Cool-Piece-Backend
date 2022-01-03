@@ -117,8 +117,7 @@ export const getUserInfo = async (req, res, next) => {
       avatar_url: user.avatar_url,
       interested_skills: user.interested_skills,
       location: user.location,
-      interested_skills,
-      bookmark,
+      bookmark: user.bookmark,
     });
   } catch (error) {
     console.log(error, "error");
