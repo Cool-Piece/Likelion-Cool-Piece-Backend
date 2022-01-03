@@ -65,11 +65,13 @@ export const makeStudy = async (req, res, next) => {
       total: Number(total),
       location,
       skills,
-      start_date:new Date(start_date),
+      start_date: new Date(start_date),
       due_date: new Date(due_date),
     });
 
-    newStudy.participants.push(userId);
+    await Study.findByIdAndUpdate(newStudy._id, {
+      $push: { participants: userId },
+    });
 
     return res.json({
       result: "ok",
@@ -82,12 +84,15 @@ export const makeStudy = async (req, res, next) => {
 };
 
 // TODO:  after create study, comment 해체
-//export const getStudyInfo = async (req, res, next) => {
-//  const { id } = req.params;
-//  const study = await Study.findById(id);
-//  if (!study) {
-//    return res.status(404).json({ message: "Can not find Study" });
-//  }
+export const getStudyInfo = async (req, res, next) => {
+  console.log("why ehre??");
+  console.log(req.params);
+  //const { id } = req.params;
+  //const study = await Study.findById(id);
+  //if (!study) {
+  //  return res.status(404).json({ message: "Can not find Study" });
+  //}
 
-//  return res.json({ studyInfo: study });
-//};
+  //return res.json({ studyInfo: study });
+  return res.send("ok");
+};

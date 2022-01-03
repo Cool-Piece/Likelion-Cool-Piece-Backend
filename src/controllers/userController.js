@@ -105,6 +105,7 @@ export const getUserInfo = async (req, res, next) => {
     const { username } = decoded;
 
     const user = await User.findOne({ username });
+    console.log(user, "user");
 
     if (!user) {
       return res.status(404).json({ message: "can not find User" });
@@ -116,6 +117,8 @@ export const getUserInfo = async (req, res, next) => {
       avatar_url: user.avatar_url,
       interested_skills: user.interested_skills,
       location: user.location,
+      interested_skills,
+      bookmark,
     });
   } catch (error) {
     console.log(error, "error");
