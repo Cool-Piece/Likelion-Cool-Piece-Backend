@@ -9,9 +9,9 @@ const StudySchema = new mongoose.Schema(
       required: true,
       ref: "User",
     },
-    start_date: { type: String, require: [true, "startDate is required"] },
+    start_date: { type: Date, require: [true, "startDate is required"] },
     due_date: {
-      type: String,
+      type: Date,
       require: [true, "dueDate is required"],
     },
     study_status: {

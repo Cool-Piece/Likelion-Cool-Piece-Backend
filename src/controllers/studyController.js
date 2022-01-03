@@ -65,8 +65,8 @@ export const makeStudy = async (req, res, next) => {
       total: Number(total),
       location,
       skills,
-      start_date,
-      due_date,
+      start_date:new Date(start_date),
+      due_date: new Date(due_date),
     });
 
     newStudy.participants.push(userId);
