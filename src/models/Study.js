@@ -26,6 +26,7 @@ const StudySchema = new mongoose.Schema(
     participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     skills: { type: [String], default: ["javascript"] },
     description: { type: String, required: true, trim: true, minLength: 2 },
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
     meta: {
       like: { type: Number, default: 0 },
       ratings: { type: Number },
