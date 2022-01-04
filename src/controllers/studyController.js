@@ -1,4 +1,5 @@
 import Study from "../models/Study";
+import User from "../models/User";
 
 export const home = async (req, res, next) => {
   const studies = await Study.find({})
@@ -88,7 +89,13 @@ export const getStudyInfo = async (req, res, next) => {
   try {
     const study = await Study.findById(id)
       .populate("creator")
-      .populate("comments");
+      .populate({
+        path: "comments",
+        populate: {
+          path: "creator",
+          model: "User",
+        },
+      });
 
     if (!study) {
       return res.status(404).json({ message: "Can not find Study" });
