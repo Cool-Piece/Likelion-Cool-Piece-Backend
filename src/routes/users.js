@@ -6,7 +6,11 @@ import {
   editUserInfo,
 } from "../controllers/userController";
 
-import { sendComment, deleteComment } from "../controllers/commentController";
+import {
+  makeComment,
+  deleteComment,
+  editComment,
+} from "../controllers/commentController";
 
 const userRouter = express.Router();
 
@@ -14,7 +18,8 @@ userRouter.get("/", getUserInfo);
 userRouter.post("/github/callback", githubAuthCallback);
 userRouter.get("/logout", logout);
 userRouter.post("/edit", editUserInfo);
-userRouter.route("/comments/:id").delete(deleteComment);
-userRouter.post("/comments/create", sendComment);
+userRouter.route("/comments/:id").put(editComment).delete(deleteComment);
+
+userRouter.post("/comments/create", makeComment);
 
 export default userRouter;
