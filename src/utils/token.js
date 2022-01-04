@@ -1,4 +1,5 @@
 function parseToken(authorization) {
+  const BEARER = "Bearer";
   if (!authorization) {
     return;
   }

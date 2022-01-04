@@ -1,18 +1,23 @@
 import Comment from "../models/Comment";
 import Study from "../models/Study";
+import User from "../models/User";
 import parseToken from "../utils/token";
+import jwt from "jsonwebtoken";
 
 export const sendComment = async (req, res, next) => {
   const studyId = req.params.id;
-  //studyId가 안온다면 요청할때, parms로 id가 안오는거니 아래 콘솔 확인해주세요
-  //console.log(req.params,"parameter")
-  //console.log(studyId,"sutdy ID")
   const authorization = req.get("Authorization");
 
   try {
     const accessToken = parseToken(authorization);
+    const secretKey = process.env.SECRET_KEY;
+
+    if (accessToken === "undefined") {
+      next({ message: "check your token!" });
+    }
+
     const decoded = jwt.verify(accessToken, secretKey);
-    const { userId } = decoded;
+    const { _id: userId } = decoded;
 
     await Comment.create({
       creator: userId,
@@ -23,13 +28,19 @@ export const sendComment = async (req, res, next) => {
       $push: { comments: userId },
     });
 
-    const comments = await Study.findById(studyId).populate("comments");
+    const study = await Study.findById(studyId);
+    const allComments = study.comments;
+    const result = [];
+
+    for (let i = 0; i < allComments.length; i++) {
+      const userInfo = await User.findById(allComments[i]);
+      result.push(userInfo);
+    }
 
     return res
       .status(201)
-      .json({ message: "success to add comment", comments });
+      .json({ message: "success to add comment", comments: result });
   } catch (error) {
-    console.log(error, "error");
     return res.json({ message: "mongoose Error" });
   }
 };
