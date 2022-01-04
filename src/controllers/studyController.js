@@ -91,6 +91,9 @@ export const getStudyInfo = async (req, res, next) => {
     if (!study) {
       return res.status(404).json({ message: "Can not find Study" });
     }
+
+    //TODO: 댓글드로 같이 뿌려주기!
+
     return res.json({ studyInfo: study });
   } catch (error) {
     console.log(error);

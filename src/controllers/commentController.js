@@ -5,7 +5,7 @@ import parseToken from "../utils/token";
 import jwt from "jsonwebtoken";
 
 export const sendComment = async (req, res, next) => {
-  const studyId = req.params.id;
+  const { studyId, content } = req.body;
   const authorization = req.get("Authorization");
 
   try {
@@ -19,13 +19,13 @@ export const sendComment = async (req, res, next) => {
     const decoded = jwt.verify(accessToken, secretKey);
     const { _id: userId } = decoded;
 
-    await Comment.create({
+    const newComment = await Comment.create({
       creator: userId,
-      content: req.body.content,
+      content,
     });
 
     await Study.findByIdAndUpdate(studyId, {
-      $push: { comments: userId },
+      $push: { comments: newComment._id },
     });
 
     return res.status(201).json({ message: "success to add comment" });
@@ -34,23 +34,17 @@ export const sendComment = async (req, res, next) => {
   }
 };
 
-export const getComments = async (req, res, next) => {
-  const studyId = req.params.id;
+export const deleteComment = async (req, res, next) => {
+  const commentId = req.params.id;
+
   try {
-    if (studyId) {
+    if (!commentId) {
       return res.status(403).json({ message: "check your request" });
     }
 
-    const study = await Study.findById(StudyId);
-    const allComments = study.comments;
-    const result = [];
+    await Comment.findByIdAndDelete(commentId);
 
-    for (let i = 0; i < allComments.length; i++) {
-      const userInfo = await User.findById(allComments[i]);
-      result.push(userInfo);
-    }
-
-    return res.json({ message: "ok", comments: result });
+    return res.json({ message: "comment is deleted" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "mongoose error" });

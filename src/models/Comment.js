@@ -11,6 +11,10 @@ const commentSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    study: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Study",
+    },
   },
   {
     timestamps: true,
