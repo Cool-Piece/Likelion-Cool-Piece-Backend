@@ -86,13 +86,13 @@ export const makeStudy = async (req, res, next) => {
 export const getStudyInfo = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const study = await Study.findById(id).populate("creator");
+    const study = await Study.findById(id)
+      .populate("creator")
+      .populate("comments");
 
     if (!study) {
       return res.status(404).json({ message: "Can not find Study" });
     }
-
-    //TODO: 댓글드로 같이 뿌려주기!
 
     return res.json({ studyInfo: study });
   } catch (error) {
