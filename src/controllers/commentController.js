@@ -65,9 +65,13 @@ export const editComment = async (req, res, next) => {
       return res.status(403).json({ message: "check your request" });
     }
 
-    await Comment.findByIdAndUpdate(commentId, {
-      contents,
-    });
+    const test = await Comment.findByIdAndUpdate(
+      commentId,
+      {
+        content: contents,
+      },
+      { new: true }
+    );
 
     return res.json({ message: "comment is deleted" });
   } catch (error) {
