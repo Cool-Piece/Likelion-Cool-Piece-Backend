@@ -37,11 +37,16 @@ export const makeComment = async (req, res, next) => {
 
 export const deleteComment = async (req, res, next) => {
   const commentId = req.params.id;
+  const studyId = req.body.studyId;
 
   try {
     if (!commentId) {
       return res.status(403).json({ message: "check your request" });
     }
+
+    await Study.findByIdAndUpdate(studyId, {
+      $pull: { comments: commentId },
+    });
 
     await Comment.findByIdAndDelete(commentId);
 
@@ -52,7 +57,7 @@ export const deleteComment = async (req, res, next) => {
   }
 };
 
-export const editComment = (req, res, next) => {
+export const editComment = async (req, res, next) => {
   const commentId = req.params.id;
   const { contents } = req.body;
   try {
