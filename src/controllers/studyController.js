@@ -85,10 +85,15 @@ export const makeStudy = async (req, res, next) => {
 
 export const getStudyInfo = async (req, res, next) => {
   const { id } = req.params;
-  const study = await Study.findById(id);
-  if (!study) {
-    return res.status(404).json({ message: "Can not find Study" });
-  }
+  try {
+    const study = await Study.findById(id).populate("creator");
 
-  return res.json({ studyInfo: study });
+    if (!study) {
+      return res.status(404).json({ message: "Can not find Study" });
+    }
+    return res.json({ studyInfo: study });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server serror" });
+  }
 };
