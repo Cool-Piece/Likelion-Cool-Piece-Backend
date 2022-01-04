@@ -28,7 +28,20 @@ export const sendComment = async (req, res, next) => {
       $push: { comments: userId },
     });
 
-    const study = await Study.findById(studyId);
+    return res.status(201).json({ message: "success to add comment" });
+  } catch (error) {
+    return res.json({ message: "mongoose Error" });
+  }
+};
+
+export const getComments = async (req, res, next) => {
+  const studyId = req.params.id;
+  try {
+    if (studyId) {
+      return res.status(403).json({ message: "check your request" });
+    }
+
+    const study = await Study.findById(StudyId);
     const allComments = study.comments;
     const result = [];
 
@@ -37,10 +50,9 @@ export const sendComment = async (req, res, next) => {
       result.push(userInfo);
     }
 
-    return res
-      .status(201)
-      .json({ message: "success to add comment", comments: result });
+    return res.json({ message: "ok", comments: result });
   } catch (error) {
-    return res.json({ message: "mongoose Error" });
+    console.log(error);
+    return res.status(500).json({ message: "mongoose error" });
   }
 };
