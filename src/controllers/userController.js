@@ -144,7 +144,7 @@ export const enrollBookmark = async (req, res, next) => {
       $push: { bookmark: studyId },
     });
 
-    return res.json({ message: "bookmark added" });
+    return res.status(201).json({ message: "bookmark added" });
   } catch (error) {
     console.log(error, "error");
   }

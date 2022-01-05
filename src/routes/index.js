@@ -18,3 +18,5 @@ indexRouter.post("/create", makeStudy);
 indexRouter.get("/:id([0-9a-f]{24})", getStudyInfo);
 
 export default indexRouter;
+
+
