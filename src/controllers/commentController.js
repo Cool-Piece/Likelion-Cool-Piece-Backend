@@ -65,7 +65,7 @@ export const editComment = async (req, res, next) => {
       return res.status(403).json({ message: "check your request" });
     }
 
-    const test = await Comment.findByIdAndUpdate(
+    await Comment.findByIdAndUpdate(
       commentId,
       {
         content: contents,

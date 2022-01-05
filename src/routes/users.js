@@ -4,6 +4,7 @@ import {
   logout,
   getUserInfo,
   editUserInfo,
+  enrollBookmark,
 } from "../controllers/userController";
 
 import {
@@ -24,5 +25,6 @@ userRouter
   .delete(deleteComment);
 
 userRouter.post("/comments/create", makeComment);
+userRouter.post("/bookmark", enrollBookmark);
 
 export default userRouter;

@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
     avatar_url: { type: String },
     location: { type: String },
     interested_skills: { type: [String] },
-    bookmark: { type: [String] },
+    bookmark: [{ type: mongoose.Schema.Types.ObjectId, ref: "Study" }],
   },
   {
     timestamps: true,

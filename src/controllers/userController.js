@@ -125,3 +125,27 @@ export const getUserInfo = async (req, res, next) => {
 
 //ToDo: user update정보 반영
 export const editUserInfo = (req, res, next) => {};
+
+export const enrollBookmark = async (req, res, next) => {
+  const studyId = req.body;
+  const authorization = req.get("Authorization");
+  try {
+    const accessToken = parseToken(authorization);
+    const decoded = jwt.verify(accessToken, secretKey);
+    const { username } = decoded;
+
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ message: "can not find User" });
+    }
+
+    await User.findByIdAndUpdate(user._id, {
+      $push: { bookmark: studyId },
+    });
+
+    return res.json({ message: "bookmark added" });
+  } catch (error) {
+    console.log(error, "error");
+  }
+};
