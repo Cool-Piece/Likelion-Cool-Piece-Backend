@@ -102,9 +102,9 @@ export const getUserInfo = async (req, res, next) => {
   try {
     const accessToken = parseToken(authorization);
     const decoded = jwt.verify(accessToken, secretKey);
-    const { username } = decoded;
+    const { _id } = decoded;
 
-    const user = await User.findOne({ username });
+    const user = await User.findById(_id);
 
     if (!user) {
       return res.status(404).json({ message: "can not find User" });
@@ -112,7 +112,7 @@ export const getUserInfo = async (req, res, next) => {
 
     return res.json({
       userId: user._id,
-      username,
+      username: user.username,
       avatar_url: user.avatar_url,
       interested_skills: user.interested_skills,
       location: user.location,
@@ -129,20 +129,20 @@ export const editUserInfo = async (req, res, next) => {
   try {
     const accessToken = parseToken(authorization);
     const decoded = jwt.verify(accessToken, secretKey);
-    const { username } = decoded;
+    const { _id } = decoded;
 
-    const user = await User.findOne({ username });
+    const user = await User.findById(_id);
 
     if (!user) {
       return res.status(404).json({ message: "can not find User" });
     }
 
-    await User.findByIdAndUpdate(user._id, {
+    await User.findByIdAndUpdate(_id, {
       $set: { interested_skills: [] },
     });
 
     await User.findByIdAndUpdate(
-      user._id,
+      _id,
       {
         username: nickname,
         location: user_location,
