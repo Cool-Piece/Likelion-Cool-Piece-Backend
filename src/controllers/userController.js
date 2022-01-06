@@ -127,7 +127,7 @@ export const getUserInfo = async (req, res, next) => {
 export const editUserInfo = (req, res, next) => {};
 
 export const enrollBookmark = async (req, res, next) => {
-  const studyId = req.body;
+  const { studyId } = req.body;
   const authorization = req.get("Authorization");
   try {
     const accessToken = parseToken(authorization);
