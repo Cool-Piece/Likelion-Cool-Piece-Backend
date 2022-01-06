@@ -123,10 +123,10 @@ export const getUserInfo = async (req, res, next) => {
   }
 };
 
-//ToDo: user update정보 반영
 export const editUserInfo = async (req, res, next) => {
   const { fav_stack, nickname, user_location } = req.body;
   try {
+    const authorization = req.get("Authorization");
     const accessToken = parseToken(authorization);
     const decoded = jwt.verify(accessToken, secretKey);
     const { username } = decoded;
