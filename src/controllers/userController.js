@@ -137,10 +137,6 @@ export const editUserInfo = async (req, res, next) => {
       return res.status(404).json({ message: "can not find User" });
     }
 
-    await User.findByIdAndUpdate(_id, {
-      $set: { interested_skills: [] },
-    });
-
     await User.findByIdAndUpdate(
       _id,
       {
