@@ -20,15 +20,16 @@ export const showProject = async (req, res, next) => {
 };
 
 export const showInterview = async (req, res, next) => {
-  const interviews = await Study.find({ study_type: "인터뷰" }).populate(
+  const interviews = await Study.find({ study_type: "면접" }).populate(
     "creator"
   );
   return res.json({ result: "ok", interviews });
 };
 
 export const showStudy = async (req, res, next) => {
-  const studies = await Study.find({ study_type: "스터디" })
-  .populate("creator");
+  const studies = await Study.find({ study_type: "스터디" }).populate(
+    "creator"
+  );
   return res.json({ result: "ok", studies });
 };
 
