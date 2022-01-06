@@ -125,8 +125,8 @@ export const getUserInfo = async (req, res, next) => {
 
 export const editUserInfo = async (req, res, next) => {
   const { fav_stack, nickname, user_location } = req.body;
+  const authorization = req.get("Authorization");
   try {
-    const authorization = req.get("Authorization");
     const accessToken = parseToken(authorization);
     const decoded = jwt.verify(accessToken, secretKey);
     const { username } = decoded;
@@ -141,11 +141,15 @@ export const editUserInfo = async (req, res, next) => {
       $set: { interested_skills: [] },
     });
 
-    await User.findByIdAndUpdate(user._id, {
-      username: nickname,
-      location: user_location,
-      $push: { interested_skills: fav_stack },
-    });
+    await User.findByIdAndUpdate(
+      user._id,
+      {
+        username: nickname,
+        location: user_location,
+        $set: { interested_skills: fav_stack },
+      },
+      { new: true }
+    );
 
     return res.json({ message: "success to edit" });
   } catch (error) {
