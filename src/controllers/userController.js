@@ -138,10 +138,15 @@ export const editUserInfo = async (req, res, next) => {
     }
 
     await User.findByIdAndUpdate(user._id, {
-      username: nickname,
-      locatin: user_location,
-      $push: { bookmark: studyId },
+      $set: { interested_skills: [] },
     });
+
+    await User.findByIdAndUpdate(user._id, {
+      username: nickname,
+      location: user_location,
+      $push: { interested_skills: fav_stack },
+    });
+
     return res.json({ message: "success to edit" });
   } catch (error) {
     console.log(error, "error");
