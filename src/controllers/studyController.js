@@ -10,19 +10,25 @@ export const home = async (req, res, next) => {
 };
 
 export const showProject = async (req, res, next) => {
-  const projects = await Study.find({ study_type: "project" });
+  const projects = await Study.find({ study_type: "project" }).populate(
+    "creator"
+  );
   return res.json({ result: "ok", projects });
 };
 
 export const showInterview = async (req, res, next) => {
-  const interviews = await Study.find({ study_type: "interview" });
+  const interviews = await Study.find({ study_type: "interview" }).populate(
+    "creator"
+  );
   return res.json({ result: "ok", interviews });
 };
 
 export const showStudy = async (req, res, next) => {
-  const studies = await Study.find({ study_type: "study" }).sort({
-    createdAt: "desc",
-  });
+  const studies = await Study.find({ study_type: "study" })
+    .sort({
+      createdAt: "desc",
+    })
+    .populate("creator");
   return res.json({ result: "ok", studies });
 };
 
