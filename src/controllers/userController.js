@@ -35,9 +35,8 @@ export const githubAuthCallback = async (req, res, next) => {
         })
       ).data;
 
-      const username = userData.login;
-
-      const existUser = await User.findOne({ username: username });
+      const userSocialId = userData.social_id;
+      const existUser = await User.findOne({ social_id: userSocialId });
 
       if (!existUser) {
         const newUser = await User.create({
@@ -79,11 +78,6 @@ export const githubAuthCallback = async (req, res, next) => {
   } catch (error) {
     console.log(error, "err");
   }
-};
-
-export const logout = (req, res) => {
-  res.clearCookie("access_token");
-  return res.json({ message: "ok" });
 };
 
 const secretKey = process.env.SECRET_KEY;

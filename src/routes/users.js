@@ -1,7 +1,6 @@
 import express from "express";
 import {
   githubAuthCallback,
-  logout,
   getUserInfo,
   editUserInfo,
   enrollBookmark,
@@ -17,7 +16,6 @@ const userRouter = express.Router();
 
 userRouter.get("/", getUserInfo);
 userRouter.post("/github/callback", githubAuthCallback);
-userRouter.get("/logout", logout);
 userRouter.post("/edit", editUserInfo);
 userRouter
   .route("/comments/:id([0-9a-f]{24})")
