@@ -153,9 +153,9 @@ export const enrollBookmark = async (req, res, next) => {
   try {
     const accessToken = parseToken(authorization);
     const decoded = jwt.verify(accessToken, secretKey);
-    const { username } = decoded;
+    const { _id } = decoded;
 
-    const user = await User.findOne({ username });
+    const user = await User.findById(_id);
 
     if (!user) {
       return res.status(404).json({ message: "can not find User" });
