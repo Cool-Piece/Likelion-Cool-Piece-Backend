@@ -170,3 +170,22 @@ export const enrollBookmark = async (req, res, next) => {
     console.log(error, "error");
   }
 };
+
+export const getMyStudy = async (req, res, next) => {
+  const authorization = req.get("Authorization");
+  try {
+    const accessToken = parseToken(authorization);
+    const decoded = jwt.verify(accessToken, secretKey);
+    const { _id } = decoded;
+
+    const user = await User.findById(_id).populate("bookmark");
+
+    if (!user) {
+      return res.status(404).json({ message: "can not find User" });
+    }
+
+    return res.json({ result: "ok", user });
+  } catch (error) {
+    console.log(error);
+  }
+};

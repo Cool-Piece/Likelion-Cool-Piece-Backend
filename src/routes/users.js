@@ -4,6 +4,7 @@ import {
   getUserInfo,
   editUserInfo,
   enrollBookmark,
+  getMyStudy,
 } from "../controllers/userController";
 
 import {
@@ -23,6 +24,7 @@ userRouter
   .delete(deleteComment);
 
 userRouter.post("/comments/create", makeComment);
+userRouter.get("/bookmark", getMyStudy);
 userRouter.post("/bookmark", enrollBookmark);
 
 export default userRouter;
