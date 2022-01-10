@@ -49,6 +49,7 @@ export const githubAuthCallback = async (req, res, next) => {
           socialLogin: "github",
           location: userData.location ? userData.location : "",
           avatar_url: userData.avatar_url,
+          social_id: userSocialId,
         });
 
         const token = jwt.sign(
@@ -61,10 +62,9 @@ export const githubAuthCallback = async (req, res, next) => {
             expiresIn: "1d",
           }
         );
-        console.log("신규우저 토큰", token);
+
         return res.json({ message: "ok", access_token: token });
       } else {
-        console.log("------------여기는 이미 로그인한 로그인 유저이다. ");
         const token = jwt.sign(
           {
             _id: existUser._id,
@@ -75,7 +75,6 @@ export const githubAuthCallback = async (req, res, next) => {
             expiresIn: "1d",
           }
         );
-        console.log("올드유저 토큰", token);
         return res.json({ message: "ok", access_token: token });
       }
     } else {
