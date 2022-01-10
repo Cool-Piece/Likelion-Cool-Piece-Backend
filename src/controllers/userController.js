@@ -1,6 +1,9 @@
 import axios from "axios";
 import User from "../models/User";
 import jwt from "jsonwebtoken";
+import parseToken from "../utils/token";
+
+const secretKey = process.env.SECRET_KEY;
 
 export const githubAuthCallback = async (req, res, next) => {
   const baseUrl = "https://github.com/login/oauth/access_token";
@@ -86,16 +89,6 @@ export const githubAuthCallback = async (req, res, next) => {
     console.log(error, "err");
   }
 };
-
-const secretKey = process.env.SECRET_KEY;
-const BEARER = "Bearer";
-
-function parseToken(authorization) {
-  if (!authorization) {
-    return;
-  }
-  return authorization.slice(BEARER.length);
-}
 
 export const getUserInfo = async (req, res, next) => {
   const authorization = req.get("Authorization");

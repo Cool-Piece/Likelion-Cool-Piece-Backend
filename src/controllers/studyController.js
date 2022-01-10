@@ -1,5 +1,6 @@
 import Study from "../models/Study";
 import User from "../models/User";
+import parseToken from "../utils/token";
 
 export const home = async (req, res, next) => {
   const studies = await Study.find({})
@@ -112,5 +113,34 @@ export const getStudyInfo = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server serror" });
+  }
+};
+
+export const joinStudy = async (req, res, next) => {
+  const authorization = req.get("Authorization");
+  const { studyId } = req.body;
+  const secretKey = process.env.SECRET_KEY;
+  if (!studyId) {
+    return res.status(400).json({ message: "study Id is needed" });
+  }
+
+  try {
+    const accessToken = parseToken(authorization);
+    const decoded = jwt.verify(accessToken, secretKey);
+    const { _id } = decoded;
+
+    await Study.findByIdAndUpdate(
+      studyId,
+      {
+        $push: { participants: _id },
+      },
+      { new: true }
+    );
+    return res
+      .status(200)
+      .json({ result: "ok", message: "added on paticipants list" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
