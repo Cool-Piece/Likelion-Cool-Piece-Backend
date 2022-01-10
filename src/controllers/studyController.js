@@ -120,6 +120,7 @@ export const joinStudy = async (req, res, next) => {
   const authorization = req.get("Authorization");
   const { studyId } = req.body;
   const secretKey = process.env.SECRET_KEY;
+  console.log(req.body);
   console.log(studyId, "check Id");
   if (!studyId) {
     console.log(" study ID 없을때 와야되");
