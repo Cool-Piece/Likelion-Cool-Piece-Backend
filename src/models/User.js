@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: LOGIN_TYPES,
     },
-    social_id: { type: String },
+    social_id: { type: Number },
     avatar_url: { type: String },
     location: { type: String },
     interested_skills: { type: [String] },

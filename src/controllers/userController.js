@@ -35,10 +35,15 @@ export const githubAuthCallback = async (req, res, next) => {
         })
       ).data;
 
-      const userSocialId = userData.social_id;
+      console.log(userData, "userData come?");
+      const userSocialId = userData.id;
+      console.log(userData.id, "id");
+      console.log(typeof userData.id, "check type id");
       const existUser = await User.findOne({ social_id: userSocialId });
+      console.log(existUser, "check");
 
       if (!existUser) {
+        console.log("------------여기는 로그인을 안한 신규유저이다. ");
         const newUser = await User.create({
           username: userData.login ? userData.login : "Unknown",
           socialLogin: "github",
@@ -56,8 +61,10 @@ export const githubAuthCallback = async (req, res, next) => {
             expiresIn: "1d",
           }
         );
+        console.log("신규우저 토큰", token);
         return res.json({ message: "ok", access_token: token });
       } else {
+        console.log("------------여기는 이미 로그인한 로그인 유저이다. ");
         const token = jwt.sign(
           {
             _id: existUser._id,
@@ -68,6 +75,7 @@ export const githubAuthCallback = async (req, res, next) => {
             expiresIn: "1d",
           }
         );
+        console.log("올드유저 토큰", token);
         return res.json({ message: "ok", access_token: token });
       }
     } else {
