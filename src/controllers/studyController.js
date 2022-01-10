@@ -1,6 +1,7 @@
 import Study from "../models/Study";
 import User from "../models/User";
 import parseToken from "../utils/token";
+import jwt from "jsonwebtoken";
 
 export const home = async (req, res, next) => {
   const studies = await Study.find({})
