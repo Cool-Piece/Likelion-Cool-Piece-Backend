@@ -120,7 +120,9 @@ export const joinStudy = async (req, res, next) => {
   const authorization = req.get("Authorization");
   const { studyId } = req.body;
   const secretKey = process.env.SECRET_KEY;
+  console.log(studyId, "check Id");
   if (!studyId) {
+    console.log(" study ID 없을때 와야되");
     return res.status(400).json({ message: "study Id is needed" });
   }
 
@@ -128,6 +130,7 @@ export const joinStudy = async (req, res, next) => {
     const accessToken = parseToken(authorization);
     const decoded = jwt.verify(accessToken, secretKey);
     const { _id } = decoded;
+    console.log(_id, "user Id");
 
     await Study.findByIdAndUpdate(
       studyId,
